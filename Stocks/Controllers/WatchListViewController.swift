@@ -11,6 +11,8 @@ class WatchListViewController: UIViewController {
     
     //MARK: - Properties
     
+    private var searchTimer: Timer?
+    
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -49,21 +51,44 @@ class WatchListViewController: UIViewController {
 //MARK: - Search Bar Extension
 
 extension WatchListViewController: UISearchResultsUpdating{
+    
     func updateSearchResults(for searchController: UISearchController) {
         guard let query = searchController.searchBar.text, let resultsVC = searchController.searchResultsController as? SearchResultViewController,
               !query.trimmingCharacters(in: .whitespaces).isEmpty else{
             return
         }
         
-        resultsVC.update(with: ["GOOG"])
-        print(query)
+        //Reset timer
+        searchTimer?.invalidate()
+        
+        //Kick off new timer
+        searchTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false, block: { _ in
+            APICaller.shared.search(query: query) { result in
+                switch result{
+                case .success(let response):
+                    DispatchQueue.main.async {
+                        resultsVC.update(with: response.result)
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        resultsVC.update(with: [])
+                    }
+                    print(error)
+                }
+            }
+        })
     }
 }
 
 extension WatchListViewController: SearchResultViewControllerDelegate{
     
-    func SearchResultViewControllerDidSelect(searchResult: String) {
+    func SearchResultViewControllerDidSelect(searchResult: SearchResult) {
+        navigationItem.searchController?.searchBar.resignFirstResponder()
         
+        let vc = StockDetailsViewController()
+        let navVC = UINavigationController(rootViewController: vc)
+        vc.title = searchResult.description
+        present(navVC, animated: true)
     }
     
     
