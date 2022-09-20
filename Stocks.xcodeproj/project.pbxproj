@@ -19,6 +19,8 @@
 		35DA984528D8306A0016D2E2 /* somefile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DA984428D8306A0016D2E2 /* somefile.swift */; };
 		35DA984728D8324B0016D2E2 /* PersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DA984628D8324B0016D2E2 /* PersistanceManager.swift */; };
 		35DA984928D832600016D2E2 /* HapticsManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DA984828D832600016D2E2 /* HapticsManger.swift */; };
+		35DA984B28D93AEE0016D2E2 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DA984A28D93AEE0016D2E2 /* Extension.swift */; };
+		35DA984D28D9469D0016D2E2 /* SearchResultsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DA984C28D9469D0016D2E2 /* SearchResultsTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		35DA984428D8306A0016D2E2 /* somefile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = somefile.swift; sourceTree = "<group>"; };
 		35DA984628D8324B0016D2E2 /* PersistanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistanceManager.swift; sourceTree = "<group>"; };
 		35DA984828D832600016D2E2 /* HapticsManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsManger.swift; sourceTree = "<group>"; };
+		35DA984A28D93AEE0016D2E2 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		35DA984C28D9469D0016D2E2 /* SearchResultsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +88,7 @@
 				35DA982328D82E8A0016D2E2 /* AppDelegate.swift */,
 				35DA982528D82E8A0016D2E2 /* SceneDelegate.swift */,
 				35DA982C28D82E8B0016D2E2 /* Assets.xcassets */,
+				35DA984A28D93AEE0016D2E2 /* Extension.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -100,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				35DA982E28D82E8B0016D2E2 /* LaunchScreen.storyboard */,
+				35DA984C28D9469D0016D2E2 /* SearchResultsTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -199,9 +205,11 @@
 				35DA983D28D8300F0016D2E2 /* TopStoriesViewController.swift in Sources */,
 				35DA982828D82E8A0016D2E2 /* WatchListViewController.swift in Sources */,
 				35DA984728D8324B0016D2E2 /* PersistanceManager.swift in Sources */,
+				35DA984B28D93AEE0016D2E2 /* Extension.swift in Sources */,
 				35DA984328D8304B0016D2E2 /* APICaller.swift in Sources */,
 				35DA983F28D830250016D2E2 /* SearchResultViewController.swift in Sources */,
 				35DA984928D832600016D2E2 /* HapticsManger.swift in Sources */,
+				35DA984D28D9469D0016D2E2 /* SearchResultsTableViewCell.swift in Sources */,
 				35DA984528D8306A0016D2E2 /* somefile.swift in Sources */,
 				35DA982428D82E8A0016D2E2 /* AppDelegate.swift in Sources */,
 				35DA982628D82E8A0016D2E2 /* SceneDelegate.swift in Sources */,
