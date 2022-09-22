@@ -14,6 +14,14 @@ class WatchListViewController: UIViewController {
     
     private var searchTimer: Timer?
     private var panel: FloatingPanelController?
+    private var watchlistMap: [String: [CandleStick]] = [:]
+    private var viewModels: [WatchListTableViewCell.ViewModel] = []
+    
+    private let tableView: UITableView = {
+        let table = UITableView()
+        
+        return table
+    }()
     
     //MARK: - Lifecycle
     
@@ -22,11 +30,88 @@ class WatchListViewController: UIViewController {
         // Do any additional setup after loading the view.
         view.backgroundColor = .systemBackground
         setUpSearchController()
+        setUpTableView()
+        fetchWatchListData()
         setUpFloatingPanel()
         setUpTitleView()
     }
     
     //MARK: - Functions
+    
+    private func setUpTableView(){
+        view.addSubviews(tableView)
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+    
+    private func fetchWatchListData(){
+        let symbols = PersitanceManager.shared.watchList
+        
+        let group = DispatchGroup()
+
+        for symbol in symbols where watchlistMap[symbol] == nil {
+            group.enter()
+            APICaller.shared.marketData(for: symbol) { [weak self] result in
+                defer {
+                    group.leave()
+                }
+                switch result {
+                case .success(let data):
+                    let candleSticks = data.candleSticks
+                    self?.watchlistMap[symbol] = candleSticks
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+
+        group.notify(queue: .main) { [weak self] in
+            self?.createViewModels()
+            self?.tableView.reloadData()
+        }
+    }
+    
+    private func createViewModels() {
+        var viewModels = [WatchListTableViewCell.ViewModel]()
+
+        for (symbol, candleSticks) in watchlistMap {
+            let changePercentage = getChangePercentage(symbol: symbol, data: candleSticks)
+            viewModels.append(
+                .init(
+                    symbol: symbol,
+                    companyName: UserDefaults.standard.string(forKey: symbol) ?? "Company",
+                    price: getLatestClosingPrice(from:candleSticks),
+                    changeColor: changePercentage < 0 ? .systemRed : .systemGreen,
+                    changePercentage: .percentage(from: changePercentage)
+                    )
+                )
+        }
+        
+         print("\n\n\(viewModels)\n\n")
+        self.viewModels = viewModels.sorted(by: { $0.symbol < $1.symbol })
+    }
+    
+    private func getChangePercentage(symbol: String, data: [CandleStick]) -> Double {
+        let latestDate = data[0].date
+    
+        guard let latestClose = data.first?.close,
+              let priorclose = data.first (where: {
+                  !Calendar.current.isDate( $0.date, inSameDayAs: latestDate)
+              })?.close else {
+            return 0
+        }
+         
+        let diff = 1 - (priorclose / latestClose)
+        return diff
+    }
+    private func getLatestClosingPrice(from data: [CandleStick]) -> String {
+        guard let closingPrice = data.first?.close else {
+            return ""
+        }
+
+        return .formatted(number: closingPrice)
+    }
+    
     private func setUpFloatingPanel(){
         
         let vc = NewsViewController(type:.topStories)
@@ -102,6 +187,22 @@ extension WatchListViewController: SearchResultViewControllerDelegate{
         present(navVC, animated: true)
     }
 }
+
+extension WatchListViewController: UITableViewDelegate, UITableViewDataSource{
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return watchlistMap.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return UITableViewCell()
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
 
 extension WatchListViewController: FloatingPanelControllerDelegate{
     
