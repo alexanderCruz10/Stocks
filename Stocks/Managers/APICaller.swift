@@ -88,6 +88,21 @@ final class APICaller{
             completion: completion
         )
     }
+    
+    public func financialMetrics(
+        for symbol: String,
+        completion: @escaping (Result<FinancialMetricsResponse, Error>) -> Void
+    ) {
+        request(
+            url: url(
+                for: .financials,
+                queryParams: ["symbol": symbol, "metric": "all"]
+            ),
+            expecting: FinancialMetricsResponse.self,
+            completion: completion
+        )
+    }
+    
     //MARK: - Private
     
     private enum Endpoint: String{
