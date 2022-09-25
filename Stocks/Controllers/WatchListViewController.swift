@@ -105,12 +105,12 @@ class WatchListViewController: UIViewController {
                     price: getLatestClosingPrice(from:candleSticks),
                     changeColor: changePercentage < 0 ? .systemRed : .systemGreen,
                     changePercentage: .percentage(from: changePercentage),
-                    chartViewModel: .init(data: candleSticks.reversed().map{ $0.close }, showLegend: false, showAxis: false)
+                    chartViewModel: .init(data: candleSticks.reversed().map{ $0.close }, showLegend: false, showAxis: false,
+                    fillColor:  changePercentage < 0 ? .systemRed : .systemGreen)
                     )
                 )
         }
         
-         print("\n\n\(viewModels)\n\n")
         self.viewModels = viewModels.sorted(by: { $0.symbol < $1.symbol })
     }
     
@@ -127,6 +127,7 @@ class WatchListViewController: UIViewController {
         let diff = 1 - (priorclose / latestClose)
         return diff
     }
+    
     private func getLatestClosingPrice(from data: [CandleStick]) -> String {
         guard let closingPrice = data.first?.close else {
             return ""

@@ -51,6 +51,7 @@ class StockDetailHeaderView: UIView, UICollectionViewDelegate, UICollectionViewD
     ///   - metricViewModels: Collection of metric viewModels
     func configure(chartViewModel: StockChartView.ViewModel, metricViewModels: [MetricCollectionViewCell.ViewModel]) {
         self.metricViewModels = metricViewModels
+        chartView.configure(with: chartViewModel)
         collectionView.reloadData()
     }
     
