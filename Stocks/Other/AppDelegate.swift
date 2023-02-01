@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
     
-    private func debug(){
+    /*private func debug(){
         APICaller.shared.marketData(for: "AAPL",numberOfDays: 1) { result in
             switch result{
             case .success(let data):
@@ -51,6 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(error)
             }
         }
-    }
+    }*/
 }
 
